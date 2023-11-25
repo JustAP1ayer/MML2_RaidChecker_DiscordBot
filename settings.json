@@ -1,0 +1,7 @@
+{
+    "token": "token",
+    "default_cooldown": 15, 
+    "ping_everyone": false, 
+    "command_prefix": "!" 
+  }
+  
