@@ -4,6 +4,7 @@ from prettytable import PrettyTable
 import json
 import requests
 '''
+# Ignore this, i tried to put this on ping but it was too ugly
 def get_ip():
     response = requests.get('https://api64.ipify.org?format=json').json()
     return response["ip"]
