@@ -4,7 +4,6 @@ from prettytable import PrettyTable
 import json
 import requests
 '''
-# Ignore this, i tried to put this on ping but it was too ugly
 def get_ip():
     response = requests.get('https://api64.ipify.org?format=json').json()
     return response["ip"]
@@ -30,7 +29,7 @@ async def on_ready():
 @commands.cooldown(1, int(config["default_cooldown"]), commands.BucketType.user)
 async def helic(ctx):
     try:
-        url = 'https://games.roblox.com/v1/games/4534813581/servers/0?sortOrder=2&excludeFullGames=false&limit=10'
+        url = 'https://games.roblox.com/v1/games/4534813581/servers/0?sortOrder=2&excludeFullGames=false&limit=100'
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -60,9 +59,41 @@ async def helic(ctx):
         print(e)
 @bot.command()
 @commands.cooldown(1, int(config["default_cooldown"]), commands.BucketType.user)
+async def old(ctx):
+    try:
+        url = 'https://games.roblox.com/v1/games/4562879976/servers/0?sortOrder=2&excludeFullGames=false&limit=100'
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            json_data = response.json()
+            data = json_data.get("data", [])
+            if data:
+                table = PrettyTable()
+                table.field_names = ["Players", "ID", "Ping"]
+                for server in data:
+                    playing = server.get("playing")
+                    server_id = server.get("id")
+                    ping = server.get("ping")
+                    if ping is None:
+                        ping = "Wait"
+                    table.add_row([playing, server_id, ping])
+                embed = discord.Embed(
+                    title=f"Old Lawn!!!",
+                    description=f"```{table}```"
+                )
+                if config["ping_everyone"] == True:
+                    await ctx.send("@everyone", embed=embed)
+                else:
+                    await ctx.send(embed=embed)
+            else:
+                await ctx.send("**``No Old Lawners``**")
+    except Exception as e:
+        print(e)
+@bot.command()
+@commands.cooldown(1, int(config["default_cooldown"]), commands.BucketType.user)
 async def llin(ctx):
     try:
-        url = 'https://games.roblox.com/v1/games/4562880298/servers/0?sortOrder=2&excludeFullGames=false&limit=10'
+        url = 'https://games.roblox.com/v1/games/4562880298/servers/0?sortOrder=2&excludeFullGames=false&limit=100'
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -94,7 +125,7 @@ async def llin(ctx):
 @commands.cooldown(1, int(config["default_cooldown"]), commands.BucketType.user)
 async def polanius(ctx):
     try:
-        url = 'https://games.roblox.com/v1/games/2648588299/servers/0?sortOrder=2&excludeFullGames=false&limit=10'
+        url = 'https://games.roblox.com/v1/games/2648588299/servers/0?sortOrder=2&excludeFullGames=false&limit=100'
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -123,3 +154,4 @@ async def polanius(ctx):
     except Exception as e:
         print(e)
 bot.run(str(config["token"]))
+
